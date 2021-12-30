@@ -3,7 +3,6 @@ import { Blockchain } from "./models/blockchain";
 import { loadBlockchain, saveBlockchain } from "./helper/util";
 import * as fs from 'fs';
 import Logger, { registerLoggers } from "./helper/logger";
-import { Console } from "console";
 registerLoggers();
 let blockchain = loadBlockchain()
 const Kuracoin = new Blockchain(blockchain);

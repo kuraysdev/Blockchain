@@ -23,11 +23,10 @@ export class Blockchain {
         return this.chain[this.chain.length - 1];
     }
 
-    addBlock(block: Block) {
-        // Так как мы добавляем новый блок, prev будет хешем предыдущего последнего блока
+    addBlock(block: Block) {     
         block.prev = this.getLastBlock().hash;
-        // Так как теперь в prev имеется значение, нужно пересчитать хеш блока
         block.hash = block.getHash();
+        
         Logger.blockchain.trace(`Added block ${block.hash}`);
         this.chain.push(block);
 
