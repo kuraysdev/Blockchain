@@ -1,0 +1,19 @@
+{
+  "name": "blockchain",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/app.js",
+  "scripts": {
+    "start": "tsc && node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kurays",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^17.0.5"
+  },
+  "dependencies": {
+    "colorette": "^2.0.16",
+    "log4js": "^6.3.0"
+  }
+}
