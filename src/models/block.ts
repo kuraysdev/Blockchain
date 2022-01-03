@@ -1,3 +1,4 @@
+import Logger from "../helper/logger";
 import { SHA256 } from "../helper/util";
 
 export class Block {
@@ -5,6 +6,7 @@ export class Block {
     data: any;
     hash: string;
     prev: string;
+    nonce: number;
 
 
     constructor(timestamp: string, data: any) {
@@ -16,4 +18,13 @@ export class Block {
     getHash() {
         return SHA256(this.prev + this.timestamp + JSON.stringify(this.data));
     } 
+
+    mineBlock(difficulty: number) {
+        while (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
+            this.nonce++;
+            this.hash = this.getHash();
+        }
+ 
+        Logger.blockchain.info("BLOCK MINED: " + this.hash);
+    }
 }

@@ -1,11 +1,16 @@
 import Logger from '../helper/logger';
 import { SHA256 } from '../helper/util';
 import { Block } from './block'
+import { Transaction } from './transaction';
 
 
 export class Blockchain {
-    difficulty: Number = 1;
+    difficulty: number = 0;
     chain: Block[];
+
+    reward: number = 1.4;
+
+    transactionsWaiting: Transaction[];
 
     constructor(chains: string) {
         if(chains == "") {
@@ -43,5 +48,36 @@ export class Blockchain {
         }
 
         return true;
+    }
+
+    minePendingTransactions(adress: string){
+        let block = new Block(Date.now().toString(), this.transactionsWaiting);
+        block.mineBlock(this.difficulty);
+ 
+        Logger.blockchain.info('Block successfully mined!');
+        this.chain.push(block);
+ 
+        this.transactionsWaiting = [
+            new Transaction(null, adress, this.reward)
+        ];
+    }
+
+
+    getBalanceOfAddress(address: string){
+        let balance = 0;
+ 
+        for(const block of this.chain){
+            for(const trans of block.data){
+                if(trans.fromAddress === address){
+                    balance -= trans.amount;
+                }
+ 
+                if(trans.toAddress === address){
+                    balance += trans.amount;
+                }
+            }
+        }
+ 
+        return balance;
     }
 }

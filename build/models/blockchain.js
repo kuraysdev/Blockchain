@@ -4,9 +4,11 @@ exports.Blockchain = void 0;
 const logger_1 = require("../helper/logger");
 const util_1 = require("../helper/util");
 const block_1 = require("./block");
+const transaction_1 = require("./transaction");
 class Blockchain {
     constructor(chains) {
-        this.difficulty = 1;
+        this.difficulty = 0;
+        this.reward = 1.4;
         if (chains == "") {
             this.chain = [new block_1.Block(Date.now().toString(), null)];
             logger_1.default.blockchain.warn('Created new Blockchain');
@@ -21,9 +23,7 @@ class Blockchain {
         return this.chain[this.chain.length - 1];
     }
     addBlock(block) {
-        // Так как мы добавляем новый блок, prev будет хешем предыдущего последнего блока
         block.prev = this.getLastBlock().hash;
-        // Так как теперь в prev имеется значение, нужно пересчитать хеш блока
         block.hash = block.getHash();
         logger_1.default.blockchain.trace(`Added block ${block.hash}`);
         this.chain.push(block);
@@ -32,11 +32,34 @@ class Blockchain {
         for (let i = 1; i < this.chain.length; i++) {
             const current = this.chain[i];
             const prev = this.chain[i - 1];
-            if (current.hash !== util_1.SHA256(current.prev + current.timestamp + JSON.stringify(current.data)) || prev.hash !== current.prev) {
+            if (current.hash !== (0, util_1.SHA256)(current.prev + current.timestamp + JSON.stringify(current.data)) || prev.hash !== current.prev) {
                 return false;
             }
         }
         return true;
+    }
+    minePendingTransactions(adress) {
+        let block = new block_1.Block(Date.now().toString(), this.transactionsWaiting);
+        block.mineBlock(this.difficulty);
+        logger_1.default.blockchain.info('Block successfully mined!');
+        this.chain.push(block);
+        this.transactionsWaiting = [
+            new transaction_1.Transaction(null, adress, this.reward)
+        ];
+    }
+    getBalanceOfAddress(address) {
+        let balance = 0;
+        for (const block of this.chain) {
+            for (const trans of block.data) {
+                if (trans.fromAddress === address) {
+                    balance -= trans.amount;
+                }
+                if (trans.toAddress === address) {
+                    balance += trans.amount;
+                }
+            }
+        }
+        return balance;
     }
 }
 exports.Blockchain = Blockchain;
