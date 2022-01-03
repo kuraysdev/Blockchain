@@ -14,6 +14,9 @@
   },
   "dependencies": {
     "colorette": "^2.0.16",
+    "libp2p": "^0.35.8",
+    "libp2p-noise": "^4.0.0",
+    "libp2p-tcp": "^0.17.2",
     "log4js": "^6.3.0"
   }
 }
