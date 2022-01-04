@@ -18,7 +18,7 @@ function registerLoggers() {
                 type: 'console',
                 layout: {
                     type: 'pattern',
-                    pattern: `%[[%d{hh:mm:ss}] [%p/${colorette_1.bold('%c')}]%]: %m`
+                    pattern: `%[[%d{hh:mm:ss}] [%p/${(0, colorette_1.bold)('%c')}]%]: %m`
                 }
             }
         },
