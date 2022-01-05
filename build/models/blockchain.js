@@ -7,10 +7,10 @@ const block_1 = require("./block");
 const transaction_1 = require("./transaction");
 class Blockchain {
     constructor(chains) {
-        this.difficulty = 0;
+        this.difficulty = 1;
         this.reward = 1.4;
         if (chains == "") {
-            this.chain = [new block_1.Block(Date.now().toString(), null)];
+            this.chain = [new block_1.Block(Date.now().toString(), undefined)];
             logger_1.default.blockchain.warn('Created new Blockchain');
         }
         else {
@@ -50,11 +50,13 @@ class Blockchain {
     getBalanceOfAddress(address) {
         let balance = 0;
         for (const block of this.chain) {
+            if (block.data == undefined)
+                continue;
             for (const trans of block.data) {
-                if (trans.fromAddress === address) {
+                if (trans.sender === address) {
                     balance -= trans.amount;
                 }
-                if (trans.toAddress === address) {
+                if (trans.receiver === address) {
                     balance += trans.amount;
                 }
             }

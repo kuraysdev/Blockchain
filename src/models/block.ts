@@ -6,7 +6,7 @@ export class Block {
     data: any;
     hash: string;
     prev: string;
-    nonce: number;
+    nonce: number = 0;
 
 
     constructor(timestamp: string, data: any) {
@@ -16,7 +16,7 @@ export class Block {
     }
     
     getHash() {
-        return SHA256(this.prev + this.timestamp + JSON.stringify(this.data));
+        return SHA256(this.prev + this.timestamp + JSON.stringify(this.data) + this.nonce);
     } 
 
     mineBlock(difficulty: number) {

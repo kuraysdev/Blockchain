@@ -5,7 +5,7 @@ import { Transaction } from './transaction';
 
 
 export class Blockchain {
-    difficulty: number = 0;
+    difficulty: number = 1;
     chain: Block[];
 
     reward: number = 1.4;
@@ -14,14 +14,14 @@ export class Blockchain {
 
     constructor(chains: string) {
         if(chains == "") {
-            this.chain = [new Block(Date.now().toString(), null)];
+            this.chain = [new Block(Date.now().toString(), undefined)];
             Logger.blockchain.warn('Created new Blockchain');
         } else {
             this.chain = JSON.parse(chains);
             Logger.blockchain.warn('Loaded Blockchain from file');
         }
         
-        Logger.blockchain.trace('Blocks in blockchain: '+this.chain.length);
+        Logger.blockchain.trace('Blocks in blockchain: '+ this.chain.length);
     }
 
     getLastBlock() {
@@ -66,13 +66,14 @@ export class Blockchain {
     getBalanceOfAddress(address: string){
         let balance = 0;
  
-        for(const block of this.chain){
-            for(const trans of block.data){
-                if(trans.fromAddress === address){
+        for(const block of this.chain) {
+            if(block.data == undefined) continue;
+            for(const trans of block.data) {
+                if(trans.sender === address) {
                     balance -= trans.amount;
                 }
  
-                if(trans.toAddress === address){
+                if(trans.receiver === address){
                     balance += trans.amount;
                 }
             }

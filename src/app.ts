@@ -16,9 +16,11 @@ Kuracoin.minePendingTransactions('test');
 console.log(generatePair())
 console.log(Kuracoin.chain)
 Kuracoin.minePendingTransactions('test');
-console.log(Kuracoin.chain)
-Kuracoin.minePendingTransactions('test');
-Kuracoin.getBalanceOfAddress('test')
+while(true) {
+    Kuracoin.minePendingTransactions('test');
+    Logger.blockchain.info("Balance: "+ Kuracoin.getBalanceOfAddress('test'))
+}
+
 
 process.on('exit', async (code) => {
     //Logger.main.error("Saving blockchain to file...");
