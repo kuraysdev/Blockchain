@@ -5,7 +5,7 @@ import { Transaction } from './transaction';
 
 
 export class Blockchain {
-    difficulty: number = 1;
+    difficulty: number = 6;
     chain: Block[];
 
     reward: number = 1.4;

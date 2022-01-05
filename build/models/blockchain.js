@@ -7,7 +7,7 @@ const block_1 = require("./block");
 const transaction_1 = require("./transaction");
 class Blockchain {
     constructor(chains) {
-        this.difficulty = 1;
+        this.difficulty = 6;
         this.reward = 1.4;
         if (chains == "") {
             this.chain = [new block_1.Block(Date.now().toString(), undefined)];
